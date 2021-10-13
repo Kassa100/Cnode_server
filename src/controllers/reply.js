@@ -1,0 +1,4 @@
+module.exports = {
+  getReplies() {},
+  postReply() {},
+};
