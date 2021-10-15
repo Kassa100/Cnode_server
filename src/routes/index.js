@@ -6,7 +6,7 @@ const authController = require("../controllers/auth");
 const replyController = require("../controllers/reply");
 const userController = require("../controllers/user");
 const categoryController = require("../controllers/category");
-const acticleController = require("../controllers/acticle");
+const articleController = require("../controllers/article");
 
 const routes = [
   {
@@ -61,23 +61,23 @@ const routes = [
   },
   {
     method: "get",
-    url: "/acticle/getAllActicles",
-    middlewares: [acticleController.getAllActicles],
+    url: "/article/getAllArticles",
+    middlewares: [articleController.getAllArticles],
   },
   {
     method: "get",
-    url: "/acticle/getArticle:id(\\d+)",
-    middlewares: [acticleController.getArticle],
+    url: "/article/getArticle/:id(\\d+)",
+    middlewares: [articleController.getArticle],
   },
   {
     method: "post",
-    url: "/acticle/postArticle",
-    middlewares: [auth(), koaBody(), acticleController.postArticle],
+    url: "/article/postArticle",
+    middlewares: [auth(), koaBody(), articleController.postArticle],
   },
   {
     method: "patch",
-    url: "/user/patchArticleViewCount:id(\\d+)/view_count",
-    middlewares: [acticleController.patchArticleViewCount],
+    url: "/user/patchArticleViewCount/:id(\\d+)/view_count",
+    middlewares: [articleController.patchArticleViewCount],
   },
   {
     method: "get",

@@ -1,5 +1,7 @@
 const mysql2 = require("mysql2/promise");
 const getUserService = require("../services/user");
+const getCategoiesService = require("../services/category");
+const getArticleService = require("../services/article");
 let db;
 let services;
 module.exports = (config) => {
@@ -9,6 +11,8 @@ module.exports = (config) => {
         db = await mysql2.createConnection(config);
         services = {
           user: getUserService(db),
+          category: getCategoiesService(db),
+          article: getArticleService(db),
         };
       } catch (err) {
         ctx.throw(500, {
