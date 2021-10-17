@@ -1,44 +1,40 @@
-const Koa = require("koa");
+const Koa = require('koa')
+const koaStaticCache = require('koa-static-cache')
+const KoaRouter = require('koa-router')
 
-const koaStaticCache = require("koa-static-cache");
+const configs = require('./configs')
 
-const koaRouter = require("koa-router");
+const {routes} = require('./routes')
+const resHandler = require('./middlewares/res_handler')
+const databaseConnection = require('./middlewares/database-connection')
 
-const configs = require("./configs");
+const app = new Koa()
 
-const { routes } = require("./routes");
-const resHandler = require("./middlewares/res_handler");
-const databaseConnections = require("./middlewares/database_connections");
-const app = new Koa();
 
-//  静态文件代理
-
-app.use(
-  koaStaticCache({
+// 静态文件代理
+app.use(koaStaticCache({
     prefix: configs.staticAssets.prefix,
     dir: configs.staticAssets.dir,
     dynamic: true,
-    gzip: true,
-  })
-);
+    gzip: true
+}))
 
-// 数据库连接
-app.use(databaseConnections(configs.database));
+// 数据库链接
+app.use(databaseConnection(configs.database))
 
-//  创建路由中间件
+// 创建路由对象
+const router = new KoaRouter({
+    prefix: configs.router.prefix
+})
 
-const router = new koaRouter({
-  prefix: configs.router.prefix,
-});
+// 绑定路由
+routes.map(route => {
+    // route.get('/', fn1, fn2)
+    router[route.method](route.url, resHandler(), ...route.middlewares);
+})
 
-//  绑定路由
-
-routes.map((route) => {
-  router[route.method](route.url, resHandler(), ...route.middlewares);
-});
-
-app.use(router.routes());
+app.use(router.routes())
 
 app.listen(configs.app.port, () => {
-  console.log(`服务启动成功：http://localhost:${configs.app.port}`);
-});
+    console.log(`服务启动成功：http://localhost:${configs.app.port}`)
+})

@@ -103,7 +103,6 @@ describe("auth", async function () {
         })
         .expect(200)
         .then((res) => {
-          console.log(res);
           let authorization = res.headers.authorization;
           if (!authorization) {
             throw new Error("没有头部信息");

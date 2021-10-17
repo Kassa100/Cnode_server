@@ -61,7 +61,7 @@ describe("文章", async function () {
   });
 
   describe("文章阅读次数", async function () {
-    const url = "/article";
+    const url = "/patchArticleViewCount";
 
     it("patch /article/-1/view_count 404", async function () {
       await request.patch(url + "/-1/view_count").expect(404);
